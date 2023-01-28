@@ -1,25 +1,45 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Back from '../../components/Back.vue';
 import axios from 'axios'
 
 const { id } = Astro.params;
-const content = await fetchContent()
+const {title, blocks} = await fetchContent()
 
 async function fetchContent() {
     const {data} = await axios.get(`${Astro.url.origin}/api/${id}.json`)
 
-    return data.blocks.join('')
+    return {
+        title: data.title,
+        blocks: data.blocks.join('')
+    }
 }
 ---
 
 <Layout title="Lauramisu">
-    <div class="flex items-center">
-        <Back client:load/>
+    <div class="flex items-center my-8">
+        <button id="back-button">< Retour aux articles</button>
     </div>
-	<main class="flex items-center justify-center">
-        <article class="prose">
-            <Fragment set:html={content}/>
+
+	<main class="w-full font-serif">
+        <h1 class="text-6xl font-bold leading-tight tracking-tight text-coffee w-full mb-12">{title}</h1>
+        
+        <article class="prose prose-h1:text-coffee w-full">
+            <Fragment set:html={blocks} />
         </article>
 	</main>
 </Layout>
+
+<script>
+  const backButton = document.querySelector('#back-button');
+
+  backButton?.addEventListener('click', () => {
+    //@ts-ignore
+    window.location = '/'
+  });
+</script>
+
+<style>
+    img {
+        @apply mx-auto
+    }
+</style>

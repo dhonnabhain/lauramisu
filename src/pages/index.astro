@@ -12,13 +12,15 @@ const articles = await fetchArticles()
 ---
 
 <Layout title="Lauramisu">
-	<main class="mt-16">
+	<main class="mt-16 space-y-3">
+		<h2 class="text-4xl font-bold leading-tight tracking-tight text-coffee">Les dernières dégustations</h2>
 		<ul class="space-y-4">
 			{articles.map(article => {
-				return <li class="shadow-xl px-3 py-2 w-full">
-					<a href={`/articles/${article.id}`}>
-					<h3 class="text-lg font-medium leading-6 text-gray-900">{ article.name }</h3>
-					<time datetime={article.date}>{ article.date }</time>
+				return <li class="border-b border-coffee px-3 py-2 w-full">
+					<a href={`/articles/${article.id}`} class="space-y-1 group">
+						<time datetime={article.date} class="text-slate-500 text-sm">{ article.date }</time>
+						<h3 class="text-xl font-bold leading-6 text-biscuit group-hover:underline font-serif">{ article.name }</h3>
+						<p class="text-coffee font-serif">{ article.header }</p>
 					</a>
 				</li>
 			})}
