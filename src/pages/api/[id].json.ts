@@ -1,38 +1,17 @@
-import { Client } from '@notionhq/client'
-
-const notion = new Client({
-  auth: import.meta.env.SECRET_NOTION_KEY,
-})
+import createNotionClient from "../../utils/createNotionClient"
+import prepareBlock from "../../utils/prepareBlock"
 
 export async function get({ params }) {
-  const response = await notion.blocks.children.list({ block_id: params.id })
+  const client = createNotionClient()
 
-  console.log(response.results[0], response.results[1])
+  const article = await client.pages.retrieve({ page_id: params.id })
+  const children = await client.blocks.children.list({ block_id: params.id })
 
-  const blocks = response.results.map(block => {
-    if(block.type === 'image') return `<image src="${block.image.file.url}"/>`
-
-    const content = block[block.type].rich_text[0].plain_text
-    let markup
-
-    switch (block.type) {
-      case 'heading_1':
-        markup = 'h1'
-        break
-      case 'heading_2':
-        markup = 'h2'
-        break
-
-      default:
-        markup = 'p'
-        break
-    }
-
-    return `<${markup}>${content}</${markup}>`
-  })
+  const blocks = children.results.map(prepareBlock)
 
   return {
     body: JSON.stringify({
+      title: article.properties.Name.title[0].plain_text,
       blocks,
     }),
   }
