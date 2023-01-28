@@ -13,12 +13,9 @@
   "dependencies": {
     "@astrojs/netlify": "^2.0.0",
     "@astrojs/tailwind": "^3.0.0",
-    "@astrojs/vue": "^2.0.0",
     "@notionhq/client": "^2.2.3",
     "astro": "^2.0.2",
-    "axios": "^1.2.5",
-    "lodash.random": "^3.2.0",
-    "vue": "^3.2.45"
+    "axios": "^1.2.5"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.9",
