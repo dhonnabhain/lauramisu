@@ -1,0 +1,27 @@
+---
+import Layout from '../layouts/Layout.astro';
+import axios from 'axios'
+
+async function fetchArticles() {
+	const {data} = await axios.get(`${Astro.url.origin}/api/list.json`)
+
+	return data
+}
+
+const articles = await fetchArticles()
+---
+
+<Layout title="Lauramisu">
+	<main class="mt-16">
+		<ul class="space-y-4">
+			{articles.map(article => {
+				return <li class="shadow-xl px-3 py-2 w-full">
+					<a href={`/articles/${article.id}`}>
+					<h3 class="text-lg font-medium leading-6 text-gray-900">{ article.name }</h3>
+					<time datetime={article.date}>{ article.date }</time>
+					</a>
+				</li>
+			})}
+		  </ul>
+	</main>
+</Layout>

@@ -1,0 +1,25 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Back from '../../components/Back.vue';
+import axios from 'axios'
+
+const { id } = Astro.params;
+const content = await fetchContent()
+
+async function fetchContent() {
+    const {data} = await axios.get(`${Astro.url.origin}/api/${id}.json`)
+
+    return data.blocks.join('')
+}
+---
+
+<Layout title="Lauramisu">
+    <div class="flex items-center">
+        <Back client:load/>
+    </div>
+	<main class="flex items-center justify-center">
+        <article class="prose">
+            <Fragment set:html={content}/>
+        </article>
+	</main>
+</Layout>
